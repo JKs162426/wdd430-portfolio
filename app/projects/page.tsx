@@ -1,9 +1,16 @@
-import { getProjects } from "@/lib/projects-db";
+import { fetchFilteredProjects } from "@/lib/projects-db";
+import ProjectSearch from "@/components/ProjectSearch";
 
-export default async function Projects() {
-  const projects = await getProjects();
+export default async function Projects({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}) {
+  const { query, page } = await searchParams;
+  const projects = await fetchFilteredProjects(query ?? "");
   return (
     <div>
+      <ProjectSearch />
       <h1 className="text-xl font-bold mb-2">Projects Overview</h1>
       <ul>
         {projects.map((project) => (
