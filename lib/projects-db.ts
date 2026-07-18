@@ -10,6 +10,7 @@ export interface Project {
 }
 
 export async function getProjects(type?: string | null): Promise<Project[]> {
+  await new Promise((res) => setTimeout(res, 2000));
   if (type) {
     const { rows } = await sql<Project>`
       SELECT * FROM projects WHERE type = ${type} ORDER BY id
