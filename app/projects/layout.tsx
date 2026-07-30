@@ -17,6 +17,9 @@ export default function ProjectsLayout({
         >
           Settings
         </Link>
+        <Link href="/projects/create" className="text-blue-600 hover:underline">
+          Create New Project
+        </Link>
       </nav>
       {children}
     </div>
