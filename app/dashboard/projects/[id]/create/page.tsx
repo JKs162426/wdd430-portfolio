@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { createProject, type State } from "@/lib/actions";
+import { createProject, type State } from "@/app/lib/actions";
 
 const initialState: State = { message: null, errors: {} };
 
