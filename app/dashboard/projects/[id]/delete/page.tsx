@@ -1,5 +1,5 @@
-import { deleteProject } from "@/lib/actions";
-import { getProjectById } from "@/lib/projects-db";
+import { deleteProject } from "@/app/lib/actions";
+import { getProjectById } from "@/app/lib/projects-db";
 
 export default async function DeleteProjectPage(props: {
   params: Promise<{ id: string }>;

@@ -1,4 +1,4 @@
-import { getProjects } from "@/lib/projects-db";
+import { getProjects } from "@/app/lib/projects-db";
 
 export default async function SchoolProjectList() {
   const projects = await getProjects("school");

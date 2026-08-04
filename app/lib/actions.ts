@@ -4,6 +4,9 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { auth } from "@/auth";
 
 const currentYear = new Date().getFullYear();
 
@@ -30,7 +33,17 @@ export type State = {
   message?: string | null;
 };
 
+export async function requireOwnerSession() {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized: No session found.");
+  {
+    return session;
+  }
+}
+
 export async function createProject(prevState: State, formData: FormData) {
+  await requireOwnerSession();
+
   const validatedFields = CreateProjectSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
@@ -64,6 +77,8 @@ export async function createProject(prevState: State, formData: FormData) {
 }
 
 export async function updateProject(id: number, formData: FormData) {
+  await requireOwnerSession();
+
   const raw = {
     title: formData.get("title"),
     description: formData.get("description"),
@@ -96,6 +111,8 @@ export async function updateProject(id: number, formData: FormData) {
 }
 
 export async function deleteProject(id: number) {
+  await requireOwnerSession();
+
   try {
     await sql`
             DELETE FROM projects WHERE id = ${id}
@@ -107,4 +124,23 @@ export async function deleteProject(id: number) {
 
   revalidatePath("/projects");
   redirect("/projects");
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid email or password.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error; // re-throw so Next.js handles redirects correctly
+  }
 }

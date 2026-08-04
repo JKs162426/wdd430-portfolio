@@ -1,5 +1,5 @@
-import { updateProject } from "@/lib/actions";
-import { getProjectById } from "@/lib/projects-db";
+import { updateProject } from "@/app/lib/actions";
+import { getProjectById } from "@/app/lib/projects-db";
 import { notFound } from "next/navigation";
 
 export default async function EditProjectPage(props: {

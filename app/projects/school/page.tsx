@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import SchoolProjectList from "@/components/SchoolProjectList";
+import SchoolProjectList from "@/app/components/SchoolProjectList";
 
 export default function SchoolProjects() {
   return (

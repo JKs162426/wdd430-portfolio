@@ -1,4 +1,4 @@
-import { getProjects } from "@/lib/projects-db";
+import { getProjects } from "@/app/lib/projects-db";
 
 export default async function OpenSourceProjects() {
   const projects = await getProjects("opensource");
